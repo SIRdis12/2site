@@ -343,6 +343,56 @@ input.error {
   margin-top: -18px;
   margin-bottom: 18px;
 }
+/* =========================
+   MENU (Удобное меню)
+   ========================= */
+
+.menu {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.menu-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: 10px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.menu-link:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.menu-link.active {
+  background: #fff;
+  color: #0e1630;
+}
+
+/* Адаптив */
+@media (max-width: 860px) {
+  .menu {
+    display: none; /* скрываем обычное меню на мобильных */
+  }
+
+  .menu.show {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: #0e1630;
+    padding: 20px;
+    gap: 10px;
+    z-index: 10;
+  }
+}
 
 /* Mobile */
 @media (max-width: 900px) {

@@ -27,8 +27,9 @@ document.getElementById("toastClose").addEventListener("click", () => {
    BURGER MENU
    ========================= */
 document.getElementById("burgerBtn").addEventListener("click", () => {
-  document.getElementById("headerMenu").classList.toggle("show");
+  document.querySelector(".menu").classList.toggle("show");
 });
+
 
 /* =========================
    PHONE MASK +375
@@ -152,4 +153,10 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
     btn.disabled = false;
     btn.textContent = "Отправить заявку";
   });
+});
+const path = window.location.pathname;
+document.querySelectorAll(".menu-link").forEach(link => {
+  if (link.getAttribute("href") === path) {
+    link.classList.add("active");
+  }
 });
