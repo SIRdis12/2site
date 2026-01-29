@@ -2,22 +2,17 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" sizes="32x32" href="img/12.jpg">
-    <link rel="icon" type="image/png" sizes="16x16" href="img/12.jpg">
+    <link rel="icon" href="img/favicon-16.png" sizes="16x16">
+    <link rel="icon" href="img/favicon-32.png" sizes="32x32">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png">
-    <!-- SEO -->
+
     <title>DMT Сервис — ремонт динамиков и роботов-пылесосов с гарантией</title>
     <meta name="description" content="Ремонт динамиков и роботов-пылесосов в вашем городе. Быстро, честно, с гарантией. Диагностика и консультация — бесплатно.">
     <meta name="keywords" content="ремонт динамиков, ремонт роботов пылесосов, сервисный центр, ремонт техники, DMT сервис">
     <meta name="author" content="DMT Сервис">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0e1630">
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="DMT Сервис — ремонт техники">
-    <meta property="og:description" content="Ремонт динамиков и роботов-пылесосов с гарантией">
-    <meta property="og:type" content="website">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,17 +21,25 @@
 
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+<div id="toastBackdrop" class="toast-backdrop"></div>
+
+<div id="toast" class="toast">
+  <button id="toastClose" class="toast-close">✕</button>
+  <div id="toastText" class="toast-text"></div>
+</div>
 
 <header>
+    <button class="burger" id="burgerBtn" aria-label="Меню">
+      ☰
+    </button>
+    <div class="header-right" id="headerMenu"></div>
     <div class="header-inner">
-
-        <!-- ЛОГО -->
         <a href="/" class="logo">
             <img src="img/123133.jpg" alt="DMT Сервис — ремонт техники">
         </a>
 
-        <!-- ТЕЛЕФОН + МЕССЕНДЖЕРЫ -->
         <div class="header-right">
             <a class="phone" href="tel:+375441234567">📞 +375 (44) 123-45-67</a>
 
@@ -44,25 +47,23 @@
                 <a href="https://t.me/ваш_логин" target="_blank" class="telegram">Telegram</a>
                 <a href="viber://chat?number=%2B375441234567" class="viber">Viber</a>
                 <a href="https://wa.me/375441234567" target="_blank" class="whatsapp">WhatsApp</a>
+                <a href="https://instagram.com/ваш_логин" target="_blank" class="instagram">Instagram</a>
             </div>
 
             <a href="#form" class="cta-btn">Оставить заявку</a>
         </div>
-
     </div>
 </header>
 
-<!-- Секция под шапой -->
 <section class="hero-section">
     <div class="hero-inner">
-        <h1>Ремонт динамиков и роботов-пылесосов</h1>
+        <h1>Ремонт динамиков и роботов-пылесосов в Минске</h1>
         <p class="hero-sub">Быстро • С гарантией • Честная цена</p>
         <a href="#form" class="hero-btn">Оставить заявку</a>
     </div>
 </section>
 
 <main>
-
 <section class="services">
     <h2>Наши услуги</h2>
     <div class="grid">
@@ -116,7 +117,6 @@
     <p>📍 Минск</p>
     <p>⏰ Пн–Сб 10:00–19:00</p>
 </section>
-
 </main>
 
 <footer>
