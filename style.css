@@ -4,7 +4,9 @@ body {
     background: #f5f7fb;
     color: #2b2b2b;
 }
-
+h3 {
+font-size: 20px;
+}
 /* HEADER */
 header {
     background: #121935;
@@ -213,6 +215,9 @@ h2::after {
     text-align: center;
     border-top: 5px solid #f2b64a;
     box-shadow: 0 18px 40px rgba(0,0,0,.08);
+}
+.cards {
+    padding-left: 50px;
 }
 
 .advantages {
