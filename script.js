@@ -1,7 +1,7 @@
 /* =========================
-   TOAST (Уведомления)
-   ========================= */
-function showToast(text, isError = false) {
+   TOAST
+========================= */
+function showToast(text, isError = false){
   const toast = document.getElementById("toast");
   const toastText = document.getElementById("toastText");
   const backdrop = document.getElementById("toastBackdrop");
@@ -12,68 +12,107 @@ function showToast(text, isError = false) {
   toast.classList.add("show");
   backdrop.classList.add("show");
 
-  setTimeout(() => {
-    toast.classList.remove("show");
-    backdrop.classList.remove("show");
-  }, 2500);
+  setTimeout(()=>{
+      toast.classList.remove("show");
+      backdrop.classList.remove("show");
+  },2500);
 }
 
-document.getElementById("toastClose").addEventListener("click", () => {
+document.getElementById("toastClose").addEventListener("click",()=>{
   document.getElementById("toast").classList.remove("show");
   document.getElementById("toastBackdrop").classList.remove("show");
 });
 
 /* =========================
-   BURGER MENU
-   ========================= */
-document.getElementById("burgerBtn").addEventListener("click", () => {
-  document.querySelector(".menu").classList.toggle("show");
-});
+   BURGER MENU + MOBILE
+========================= */
+const burgerBtn = document.getElementById("burgerBtn");
+const menu = document.querySelector(".menu");
+const headerRight = document.getElementById("headerMenu");
 
+// Создаем мобильное меню
+function createMobileMenu(){
+    const mobileMenu = document.createElement("div");
+    mobileMenu.className = "mobile-menu";
+
+    // Копируем ссылки меню
+    menu.querySelectorAll(".menu-link").forEach(link => {
+        const clone = link.cloneNode(true);
+        mobileMenu.appendChild(clone);
+    });
+
+    // Копируем телефон
+    const phone = headerRight.querySelector(".phone");
+    if(phone){
+        const phoneClone = phone.cloneNode(true);
+        mobileMenu.appendChild(phoneClone);
+    }
+
+    // Копируем мессенджеры
+    const messengers = headerRight.querySelector(".messengers");
+    if(messengers){
+        const messengersClone = messengers.cloneNode(true);
+        mobileMenu.appendChild(messengersClone);
+    }
+
+    // Добавляем кнопку "Оставить заявку"
+    const ctaBtn = headerRight.querySelector(".cta-btn");
+    if(ctaBtn){
+        const ctaClone = ctaBtn.cloneNode(true);
+        mobileMenu.appendChild(ctaClone);
+    }
+
+    document.body.appendChild(mobileMenu);
+
+    // Закрытие при клике вне
+    document.addEventListener("click", (e)=>{
+        if(!mobileMenu.contains(e.target) && !burgerBtn.contains(e.target)){
+            mobileMenu.classList.remove("show");
+        }
+    });
+
+    return mobileMenu;
+}
+
+const mobileMenu = createMobileMenu();
+
+// Открытие/закрытие
+burgerBtn.addEventListener("click", ()=>{
+    mobileMenu.classList.toggle("show");
+});
 
 /* =========================
    PHONE MASK +375
-   ========================= */
+========================= */
 const phoneInput = document.getElementById("phone");
+phoneInput.addEventListener("input",(e)=>{
+  let input = e.target;
+  let oldValue = input.value;
+  let oldCursor = input.selectionStart;
 
-phoneInput.addEventListener("input", (e) => {
-  const input = e.target;
-  const oldValue = input.value;
-  const oldCursor = input.selectionStart;
+  let digits = oldValue.replace(/\D/g,"");
+  if(!digits.startsWith("375")) digits = "375" + digits.replace(/^375/,"");
+  digits = digits.slice(0,12);
 
-  // сохраняем только цифры
-  let digits = oldValue.replace(/\D/g, "");
-
-  // всегда начинается с 375
-  if (!digits.startsWith("375")) {
-    digits = "375" + digits.replace(/^375/, "");
-  }
-
-  // ограничение до 12 цифр
-  digits = digits.slice(0, 12);
-
-  // форматируем
   let formatted = "+375";
-  if (digits.length > 3) formatted += " (" + digits.slice(3, 5);
-  if (digits.length >= 5) formatted += ") " + digits.slice(5, 8);
-  if (digits.length >= 8) formatted += "-" + digits.slice(8, 10);
-  if (digits.length >= 10) formatted += "-" + digits.slice(10, 12);
+  if(digits.length>3) formatted+=" ("+digits.slice(3,5);
+  if(digits.length>=5) formatted+=") "+digits.slice(5,8);
+  if(digits.length>=8) formatted+="-"+digits.slice(8,10);
+  if(digits.length>=10) formatted+="-"+digits.slice(10,12);
 
   input.value = formatted;
 
-  // восстановление курсора (примерно в той же позиции)
-  // если курсор был в конце — оставляем в конце
-  if (oldCursor === oldValue.length) {
-    input.selectionStart = input.selectionEnd = input.value.length;
-  } else {
-    input.selectionStart = input.selectionEnd = oldCursor;
+  if(oldCursor===oldValue.length){
+      input.selectionStart=input.selectionEnd=input.value.length;
+  }else{
+      input.selectionStart=input.selectionEnd=oldCursor;
   }
 });
 
 /* =========================
    FORM SUBMIT
-   ========================= */
-document.getElementById("orderForm").addEventListener("submit", function(e) {
+========================= */
+document.getElementById("orderForm").addEventListener("submit",function(e){
   e.preventDefault();
 
   const name = document.getElementById("name");
@@ -82,81 +121,67 @@ document.getElementById("orderForm").addEventListener("submit", function(e) {
   const comment = document.getElementById("comment").value.trim();
   const btn = document.querySelector(".big-btn");
 
-  // Очистка ошибок
   name.classList.remove("error");
   phone.classList.remove("error");
   const oldErr = document.querySelector(".error-text");
-  if (oldErr) oldErr.remove();
+  if(oldErr) oldErr.remove();
 
-  // Валидация имени
-  if (name.value.trim().length < 2) {
+  if(name.value.trim().length<2){
     name.classList.add("error");
-    showToast("Введите ваше имя (минимум 2 символа).", true);
+    showToast("Введите ваше имя (минимум 2 символа).",true);
     return;
   }
 
-  // Валидация телефона
-  const digits = phone.value.replace(/\D/g, "");
-  if (digits.length !== 12 || !digits.startsWith("375")) {
+  const digits = phone.value.replace(/\D/g,"");
+  if(digits.length!==12 || !digits.startsWith("375")){
     phone.classList.add("error");
-
     const err = document.createElement("div");
-    err.className = "error-text";
-    err.innerText = "Введите корректный белорусский номер +375 (пример: +375 (29) 123-45-67)";
-    phone.parentNode.insertBefore(err, phone.nextSibling);
-
-    showToast("Введите корректный номер телефона.", true);
+    err.className="error-text";
+    err.innerText="Введите корректный белорусский номер +375 (пример: +375 (29) 123-45-67)";
+    phone.parentNode.insertBefore(err,phone.nextSibling);
+    showToast("Введите корректный номер телефона.",true);
     return;
   }
 
-  // Отправка формы
-  btn.disabled = true;
-  btn.textContent = "Отправляем...";
+  btn.disabled=true;
+  btn.textContent="Отправляем...";
   showToast("Отправляем заявку...");
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 15000);
+  const timeout = setTimeout(()=>controller.abort(),15000);
 
-  fetch("https://server-o35p.onrender.com/send", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name: name.value.trim(),
-      phone: phone.value.trim(),
-      service,
-      comment
-    }),
-    signal: controller.signal
+  fetch("https://server-o35p.onrender.com/send",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({name:name.value.trim(),phone:phone.value.trim(),service,comment}),
+      signal: controller.signal
   })
-  .then(res => {
-    if (!res.ok) throw new Error();
-    return res.json();
+  .then(res=>{
+      if(!res.ok) throw new Error();
+      return res.json();
   })
-  .then(data => {
-    if (data.ok) {
-      showToast("Заявка отправлена! Мы скоро свяжемся с вами.");
-      document.getElementById("orderForm").reset();
-      phone.value = "";
-    } else {
-      showToast("Ошибка отправки. Попробуйте позже.", true);
-    }
+  .then(data=>{
+      if(data.ok){
+          showToast("Заявка отправлена! Мы скоро свяжемся с вами.");
+          document.getElementById("orderForm").reset();
+          phone.value="";
+      }else showToast("Ошибка отправки. Попробуйте позже.",true);
   })
-  .catch(err => {
-    if (err.name === "AbortError") {
-      showToast("Сервер долго отвечает. Попробуйте ещё раз.", true);
-    } else {
-      showToast("Ошибка отправки. Попробуйте позже.", true);
-    }
+  .catch(err=>{
+      if(err.name==="AbortError") showToast("Сервер долго отвечает. Попробуйте ещё раз.",true);
+      else showToast("Ошибка отправки. Попробуйте позже.",true);
   })
-  .finally(() => {
-    clearTimeout(timeout);
-    btn.disabled = false;
-    btn.textContent = "Отправить заявку";
+  .finally(()=>{
+      clearTimeout(timeout);
+      btn.disabled=false;
+      btn.textContent="Отправить заявку";
   });
 });
+
+/* =========================
+   MENU ACTIVE LINK
+========================= */
 const path = window.location.pathname;
-document.querySelectorAll(".menu-link").forEach(link => {
-  if (link.getAttribute("href") === path) {
-    link.classList.add("active");
-  }
+document.querySelectorAll(".menu-link").forEach(link=>{
+  if(link.getAttribute("href")===path) link.classList.add("active");
 });
